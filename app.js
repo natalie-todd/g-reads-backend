@@ -10,6 +10,17 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cors());
 
+app.get("/posts/:id", (request, response, next) => {
+    queries
+        .readPosts(request.params.id)
+        .then(posts => {
+            posts
+                ? response.json({ posts })
+                : response.status(404).json({ message: "Not found" });
+        })
+        .catch(next);
+});
+
 app.listen(port)
     .on("error", console.error.bind(console))
     .on("listening", console.log.bind(console, "Listening on " + port));
