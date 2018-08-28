@@ -73,12 +73,12 @@ module.exports = {
                 bookId: "book.id",
                 Title: "book.Title",
                 Genre: "book.Genre",
-                Description: "book.Description",
+                // Description: "book.Description",
                 CoverUrl: "book.CoverUrl",
                 FirstName: "author.FirstName",
                 LastName: "author.LastName",
-                Biography: "author.Biography",
-                Portrait: "author.Portrait"
+                // Biography: "author.Biography",
+                // Portrait: "author.Portrait"
             });
     },
 };

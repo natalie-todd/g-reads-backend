@@ -102,12 +102,14 @@ app.put("/books/:id", (request, response, next) => {
         .catch(next);
 });
 
+// '/books/?=by_author'
+
 app.get("/books/author/:id", (request, response, next) => {
     queries
         .readBoth(request.params.id)
-        .then(book_auth => {
-            book_auth
-                ? response.json({ book_auth })
+        .then(book => {
+            book
+                ? response.json({ book: book })
                 : response.status(404).json({ message: "Not found" });
         })
         .catch(next);
