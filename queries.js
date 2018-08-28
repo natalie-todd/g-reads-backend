@@ -1,7 +1,10 @@
 const database = require("./database-connection");
 
 module.exports = {
-    readAuthor() {
+    listAuthors() {
+        return database("author");
+    },
+    readBoth() {
         return database("book_auth")
             .join(
                 "book",

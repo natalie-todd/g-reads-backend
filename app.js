@@ -3,16 +3,25 @@ const app = express()
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const port = parseInt(process.env.PORT || 3000);
-// const queries = require("./queries.js");
+const queries = require("./queries.js");
 const cors = require("cors");
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/author/:id", (request, response, next) => {
+app.get("/authors", (request, response, next) => {
     queries
-        .readAuthor(request.params.id)
+        .listAuthors()
+        .then(author => {
+            response.json({ author });
+        })
+        .catch(next);
+});
+
+app.get("/authors/:id", (request, response, next) => {
+    queries
+        .readAuthors(request.params.id)
         .then(author => {
             author
                 ? response.json({ author })
@@ -21,13 +30,11 @@ app.get("/author/:id", (request, response, next) => {
         .catch(next);
 });
 
-app.get("/book/:id", (request, response, next) => {
+app.get("/bookauth", (request, response, next) => {
     queries
-        .readBook(request.params.id)
-        .then(book => {
-            book
-                ? response.json({ book })
-                : response.status(404).json({ message: "Not found" });
+        .readBoth(request.params.id)
+        .then(book_auth => {
+                response.json({ book_auth })
         })
         .catch(next);
 });
