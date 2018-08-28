@@ -37,6 +37,6 @@ exports.seed = function (knex, Promise) {
         }
       ]);
     }).then(() => {
-      return knex.raw('ALTER SEQUENCE profile_id_seq RESTART WITH 5;');
+      return knex.raw('ALTER SEQUENCE book_auth_id_seq RESTART WITH 5;');
     })
   };
