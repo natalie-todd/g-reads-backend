@@ -10,12 +10,23 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/posts/:id", (request, response, next) => {
+app.get("/author/:id", (request, response, next) => {
     queries
-        .readPosts(request.params.id)
-        .then(posts => {
-            posts
-                ? response.json({ posts })
+        .readAuthor(request.params.id)
+        .then(author => {
+            author
+                ? response.json({ author })
+                : response.status(404).json({ message: "Not found" });
+        })
+        .catch(next);
+});
+
+app.get("/book/:id", (request, response, next) => {
+    queries
+        .readBook(request.params.id)
+        .then(book => {
+            book
+                ? response.json({ book })
                 : response.status(404).json({ message: "Not found" });
         })
         .catch(next);
