@@ -4,6 +4,30 @@ module.exports = {
     listAuthors() {
         return database("author");
     },
+    readAuthors(id) {
+        return database("author")
+            .select()
+            .where("id", id)
+            .first();
+    },
+    createAuthors(author) {
+        return database("author")
+            .insert(author)
+            .returning("*")
+            .then(record => record[0]);
+    },
+    updateAuthors(id, author) {
+        return database("author")
+            .update(author)
+            .where("id", id)
+            .returning("*")
+            .then(record => record[0]);
+    },
+    deleteAuthors(id) {
+        return database("author")
+            .delete()
+            .where("id", id);
+    },
     readBoth() {
         return database("book_auth")
             .join(

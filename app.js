@@ -30,6 +30,32 @@ app.get("/authors/:id", (request, response, next) => {
         .catch(next);
 });
 
+app.post("/authors", (request, response, next) => {
+    queries
+        .createAuthors(request.body)
+        .then(author => {
+            response.status(201).json({ author: author });
+        })
+        .catch(next);
+});
+app.delete("/authors/:id", (request, response, next) => {
+    queries
+        .deleteAuthors(request.params.id)
+        .then(() => {
+            response.status(204).json({ deleted: true });
+        })
+        .catch(next);
+});
+
+app.put("/authors/:id", (request, response, next) => {
+    queries
+        .updateAuthors(request.params.id, request.body)
+        .then(author => {
+            response.json({ author: author[0] });
+        })
+        .catch(next);
+});
+
 app.get("/bookauth", (request, response, next) => {
     queries
         .readBoth(request.params.id)
