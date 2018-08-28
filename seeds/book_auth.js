@@ -36,5 +36,7 @@ exports.seed = function (knex, Promise) {
           authorId: 6 
         }
       ]);
-    });
+    }).then(() => {
+      return knex.raw('ALTER SEQUENCE profile_id_seq RESTART WITH 5;');
+    })
   };
