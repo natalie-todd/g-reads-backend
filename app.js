@@ -56,11 +56,61 @@ app.put("/authors/:id", (request, response, next) => {
         .catch(next);
 });
 
-app.get("/bookauth", (request, response, next) => {
+app.get("/books", (request, response, next) => {
+    queries
+        .listBooks()
+        .then(book => {
+            response.json({ book });
+        })
+        .catch(next);
+});
+
+app.get("/books/:id", (request, response, next) => {
+    queries
+        .readBooks(request.params.id)
+        .then(book => {
+            book
+                ? response.json({ book })
+                : response.status(404).json({ message: "Not found" });
+        })
+        .catch(next);
+});
+
+app.post("/book", (request, response, next) => {
+    queries
+        .createBooks(request.body)
+        .then(book => {
+            response.status(201).json({ book: book });
+        })
+        .catch(next);
+});
+app.delete("/books/:id", (request, response, next) => {
+    queries
+        .deleteBooks(request.params.id)
+        .then(() => {
+            response.status(204).json({ deleted: true });
+        })
+        .catch(next);
+});
+
+app.put("/books/:id", (request, response, next) => {
+    queries
+        .updateBooks(request.params.id, request.body)
+        .then(book => {
+            response.json({ book: book[0] });
+        })
+        .catch(next);
+});
+
+// '/books/?=by_author'
+
+app.get("/books/author/:id", (request, response, next) => {
     queries
         .readBoth(request.params.id)
-        .then(book_auth => {
-                response.json({ book_auth })
+        .then(book => {
+            book
+                ? response.json({ book: book })
+                : response.status(404).json({ message: "Not found" });
         })
         .catch(next);
 });

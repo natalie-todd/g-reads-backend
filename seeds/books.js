@@ -47,5 +47,7 @@ exports.seed = function (knex, Promise) {
           CoverUrl: "https://s3-us-west-2.amazonaws.com/assessment-images/galvanize_reads/photos/async_and_performance.jpg"
         }
       ]);
-    });
+    }).then(() => {
+      return knex.raw('ALTER SEQUENCE profile_id_seq RESTART WITH 5;');
+    })
 };
