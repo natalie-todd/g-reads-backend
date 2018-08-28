@@ -1,48 +1,57 @@
 const database = require("./database-connection");
 
 module.exports = {
-    readAuthor(id) {
+    listAuthors() {
+        return database("author");
+    },
+    readAuthors(id) {
         return database("author")
-            .join(
-                "book_auth",
-                "author.id",
-                "=",
-                "book_auth.authorId"
-            )
-            .select({
-                author_id: "author.id",
-                country_id: "country.id",
-                profile_id: "author.profile_id",
-                country_name: "author.country_name",
-                goal_date: "author.goal_date",
-                activities: "author.activities",
-                visited: "author.visited",
-                latitude: "country.latitude",
-                longitude: "country.longitude"
-            })
-            .where("author.id", id)
+            .select()
+            .where("id", id)
             .first();
     },
-    readAuthor(id) {
-        return database("book")
+    createAuthors(author) {
+        return database("author")
+            .insert(author)
+            .returning("*")
+            .then(record => record[0]);
+    },
+    updateAuthors(id, author) {
+        return database("author")
+            .update(author)
+            .where("id", id)
+            .returning("*")
+            .then(record => record[0]);
+    },
+    deleteAuthors(id) {
+        return database("author")
+            .delete()
+            .where("id", id);
+    },
+    readBoth() {
+        return database("book_auth")
             .join(
-                "book_auth",
-                "book.id",
+                "book",
+                "book_auth.bookId",
                 "=",
-                "book_auth.authId"
+                "book.id"
+            )
+            .join(
+                "author",
+                "book_auth.authorId",
+                "=",
+                "author.id"
             )
             .select({
-                author_id: "author.id",
-                country_id: "country.id",
-                profile_id: "author.profile_id",
-                country_name: "author.country_name",
-                goal_date: "author.goal_date",
-                activities: "author.activities",
-                visited: "author.visited",
-                latitude: "country.latitude",
-                longitude: "country.longitude"
-            })
-            .where("book.id", id)
-            .first();
+                bookId: "book.id",
+                Title: "book.Title",
+                Genre: "book.Genre",
+                Description: "book.Description",
+                CoverUrl: "book.CoverUrl",
+                FirstName: "author.FirstName",
+                LastName: "author.LastName",
+                Biography: "author.Biography",
+                Portrait: "author.Portrait"
+            });
     },
-}
+};
