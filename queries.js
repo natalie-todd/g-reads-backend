@@ -1,48 +1,30 @@
 const database = require("./database-connection");
 
 module.exports = {
-    readAuthor(id) {
-        return database("author")
+    readAuthor() {
+        return database("book_auth")
             .join(
-                "book_auth",
-                "author.id",
+                "book",
+                "book_auth.bookId",
                 "=",
-                "book_auth.authorId"
+                "book.id"
+            )
+            .join(
+                "author",
+                "book_auth.authorId",
+                "=",
+                "author.id"
             )
             .select({
-                author_id: "author.id",
-                country_id: "country.id",
-                profile_id: "author.profile_id",
-                country_name: "author.country_name",
-                goal_date: "author.goal_date",
-                activities: "author.activities",
-                visited: "author.visited",
-                latitude: "country.latitude",
-                longitude: "country.longitude"
-            })
-            .where("author.id", id)
-            .first();
+                bookId: "book.id",
+                Title: "book.Title",
+                Genre: "book.Genre",
+                Description: "book.Description",
+                CoverUrl: "book.CoverUrl",
+                FirstName: "author.FirstName",
+                LastName: "author.LastName",
+                Biography: "author.Biography",
+                Portrait: "author.Portrait"
+            });
     },
-    readAuthor(id) {
-        return database("book")
-            .join(
-                "book_auth",
-                "book.id",
-                "=",
-                "book_auth.authId"
-            )
-            .select({
-                author_id: "author.id",
-                country_id: "country.id",
-                profile_id: "author.profile_id",
-                country_name: "author.country_name",
-                goal_date: "author.goal_date",
-                activities: "author.activities",
-                visited: "author.visited",
-                latitude: "country.latitude",
-                longitude: "country.longitude"
-            })
-            .where("book.id", id)
-            .first();
-    },
-}
+};
